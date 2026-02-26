@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../db.js'; // Исправлен путь
+import { sequelize } from '../db.js';
 
-export const Client = sequelize.define('clients', {
+export const Client = sequelize.define('Client', {   
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -12,14 +12,14 @@ export const Client = sequelize.define('clients', {
         allowNull: false,
     },
     bday: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,   
         allowNull: true,
     },
     rating: {
-        type: DataTypes.DECIMAL,
-        allowNull: true
+        type: DataTypes.DECIMAL(5, 2), 
+        allowNull: true,
     },
-}, { // Добавлена запятая и открывающая скобка для options
-    // Опции модели (можно оставить пустым)
-    timestamps: false // если не нужны createdAt и updatedAt
+}, {
+    tableName: 'clients',           
+    timestamps: false,
 });
