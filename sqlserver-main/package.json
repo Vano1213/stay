@@ -1,0 +1,21 @@
+{
+  "name": "sqlserver",
+  "version": "1.0.0",
+  "description": "npm install express pg dotenv cors sequelize -D nodemon - модули\r npm init -y - запустить сервер\r Dotenv - секретные данные в окружении в защите\r express- маршрутизация сервера запуск через api endpoint\r cors - позволяет подключаться к серверу с других компьютеров\r sequelize - позволяет работать с бд через javascript работает вместе с pg\r pg - ядро постгресс без него не будет работать сервер\r nodemon - перезапуск сервера при изменениях сервера\r Прежде чем проектировать бд необходимо сделать диаграмму",
+  "main": "sql.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ins1de232/sqlserver.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Ins1de232/sqlserver/issues"
+  },
+  "homepage": "https://github.com/Ins1de232/sqlserver#readme"
+}

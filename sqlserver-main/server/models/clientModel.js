@@ -20,5 +20,5 @@ export const ClientModel = sequelize.define('clients', {
         allowNull: true
     },
 }, { 
-    timestamps: false // если не нужны createdAt и updatedAt
+    timestamps: false
 });

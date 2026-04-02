@@ -1,5 +1,6 @@
 import { OrderModel } from '../models/orderModel.js';
 
+
 export const createOrder = async (req, res) => {
     try {
         const { date, status } = req.body;
@@ -9,7 +10,6 @@ export const createOrder = async (req, res) => {
             status: status || 'pending'
         });
         
-
         const { clientId, ...orderWithoutClientId } = order.toJSON();
         res.status(201).json(orderWithoutClientId);
     } catch (error) {
@@ -18,13 +18,13 @@ export const createOrder = async (req, res) => {
     }
 };
 
+
 export const getAllOrders = async (req, res) => {
     try {
         const orders = await OrderModel.findAll({
             order: [['date', 'DESC']]
         });
         
-
         const ordersWithoutClientId = orders.map(order => {
             const { clientId, ...rest } = order.toJSON();
             return rest;
@@ -36,6 +36,7 @@ export const getAllOrders = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 export const getOrderById = async (req, res) => {
     try {
@@ -52,24 +53,55 @@ export const getOrderById = async (req, res) => {
     }
 };
 
-export const updateOrder = async (req, res) => {
+
+export const updateOrderPut = async (req, res) => {
     try {
+        const { id } = req.params;
         const { date, status } = req.body;
         
-        const [updated] = await OrderModel.update(
-            { date, status },
-            { where: { id: req.params.id } }
-        );
+        const order = await OrderModel.findByPk(id);
         
-        if (updated) {
-            const updatedOrder = await OrderModel.findByPk(req.params.id);
-            const { clientId, ...orderWithoutClientId } = updatedOrder.toJSON();
-            res.json(orderWithoutClientId);
-        } else {
-            res.status(404).json({ error: 'заказ не найден' });
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
         }
+        
+        await order.update({
+            date: date || order.date,
+            status: status || order.status
+        });
+        
+        const { clientId, ...orderWithoutClientId } = order.toJSON();
+        res.json({ 
+            message: 'Order fully updated', 
+            order: orderWithoutClientId 
+        });
     } catch (error) {
-        console.error('ошибка обновления заказ:', error);
+        console.error('Error updating order (PUT):', error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+export const updateOrderPatch = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updateData = req.body;
+        
+        const order = await OrderModel.findByPk(id);
+        
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+        
+        await order.update(updateData);
+        
+        const { clientId, ...orderWithoutClientId } = order.toJSON();
+        res.json({ 
+            message: 'Order partially updated', 
+            order: orderWithoutClientId 
+        });
+    } catch (error) {
+        console.error('Error updating order (PATCH):', error);
         res.status(500).json({ error: error.message });
     }
 };
@@ -83,10 +115,10 @@ export const deleteOrder = async (req, res) => {
         if (deleted) {
             res.status(204).send();
         } else {
-            res.status(404).json({ error: 'заказ не нйаден' });
+            res.status(404).json({ error: 'Order not found' });
         }
     } catch (error) {
-        console.error('ошибка удаления заказа:', error);
+        console.error('Error deleting order:', error);
         res.status(500).json({ error: error.message });
     }
 };

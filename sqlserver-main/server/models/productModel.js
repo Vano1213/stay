@@ -25,5 +25,5 @@ export const ProductModel = sequelize.define('product', {
     type: DataTypes.INTEGER,
   }
 }, {
-  timestamps: false, // не создавать createdAt и updatedAt
+  timestamps: false,
 });
